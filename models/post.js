@@ -12,7 +12,8 @@ const postSchema = new Schema({
     required: true,
   },
   content: {},
-  categories: [{ type: ObjectId, ref: 'Blog Category' }],
+  categories: [{ type: ObjectId, ref: 'Category' }],
+  author:{type: ObjectId, ref: 'Author'},
   Image:{ 
     type: Object,
     },
