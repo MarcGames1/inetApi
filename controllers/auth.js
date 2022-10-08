@@ -131,7 +131,7 @@ export const forgotPassword = async (req, res) => {
   const emailData = {
     from: process.env.SENDGRID_SENDER,
     to: user.email,
-    subject: "Resetare Parola Coramarc.ro",
+    subject: "Resetare Parola",
     html: `<h1>Codul pentru resetarea parolei este: ${user.resetCode}</h1>`
   };
   // send email
@@ -142,6 +142,7 @@ export const forgotPassword = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.json({ ok: false });
+    
   }
 };
 
@@ -173,17 +174,20 @@ export const resetPassword = async (req, res) => {
 
 
 export const isAuth = async (req, res, next) => {
-
+console.log(req.user)
   try{
      const user = await User.findById(req.user._id);
      if(!user) {
+      res.clearCookie('t');
       return res.status(404).json({error: "User Not Found!"})
      }
      else{
+      console.log('isauth passed')
       next()
      }
   } catch (err) {
-   
+   console.log('isauth Error');
+    res.clearCookie('t');
     return res.status(500).json({ error: err})
   }
 };
@@ -192,18 +196,20 @@ export const isAdmin = async (req, res, next) => {
   try {
     const user = await User.findById(req.user._id);
     if (user.role !== 'Admin') {
+      res.clearCookie('t');
       return res.status(403).send('Unauhorized');
     } else {
+      console.log('isAdmin passed')
       next();
     }
   } catch (err) {
-    
+    res.clearCookie('t');
   }
 };
 
 export const requireSignin = expressjwt({
   secret: process.env.JWT_SECRET,
-  // userProperty: "auth",
+  user: "auth",
   algorithms: ["HS256"],
 })
 
@@ -213,6 +219,8 @@ export const currentUser = async (req, res) => {
     const user = await User.findById(req.user._id);
     res.json({ ok: true });
   } catch (err) {
+    res.clearCookie('t');
+   console.log(err)
    
   }
 };
