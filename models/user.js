@@ -31,8 +31,9 @@ const userSchema = new mongoose.Schema(
       default: 'Subscriber',
     },
     image: {
-      public_id: '',
-      url: '',
+      type: String,
+      trim: true,
+      
     },
     resetCode: '',
   },

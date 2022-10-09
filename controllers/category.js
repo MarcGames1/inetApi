@@ -9,7 +9,9 @@ exports.categoryById = (req, res, next, id) => {
             })
         }
         req.category = category
+        console.log("ReqCategory Middleweare success => ",req.category)
         next()
+
     })
 } 
 
@@ -41,7 +43,7 @@ exports.read = (req,res) =>{
 exports.update = (req,res) =>{
     const category = req.category
     category.name = req.body.name
-    (category.slug = slugify(category.name)),
+    category.slug = slugify(category.name),
       category.save((err, data) => {
         if (err) {
           return res.status(400).json({

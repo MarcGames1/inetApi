@@ -20,11 +20,11 @@ const authorSchema = new mongoose.Schema(
     },
     functie: {
       type: String,
-      default: 'Subscriber',
+      trim: true,
     },
     image: {
-      public_id: '',
-      url: '',
+      type: String,
+      trim: true,
     },
     slug: {
       type: String,
