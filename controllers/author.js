@@ -1,5 +1,7 @@
 import Author from '../models/author';
 import slugify from 'slugify';
+import multiparty from 'multiparty'
+
 
 exports.authorById = (req, res, next, id) => {
   Author.findById(id).exec((err, author) => {
@@ -14,6 +16,9 @@ exports.authorById = (req, res, next, id) => {
 };
 
 exports.create = async (req, res) => {
+  console.log('Create Author started with:');
+  console.log('req.body,', req.body);
+  
   const { nume, prenume, email,functie, image, bio, socialMedia  } = req.body;
   const author = await new Author({
     nume,

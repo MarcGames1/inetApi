@@ -1,103 +1,131 @@
 import multer from 'multer';
 const path = require('path');
-
-export const uploadPostImage = (req, res, next) =>{
-
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, './public/posts/');
-  },
-
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, file.originalname + '-' + file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-  },
-});
-
-const upload = multer({ storage: storage }).single('postImage');
+var multiparty = require('multiparty');
+const fs = require('fs');
+const mv = require('mv');
 
 
+ export const addFieldstobody = (req, res, next)=>{
+    const uploadPath = checkDir(path.join(__dirname, '../public/tmp'));
+     var form = new multiparty.Form({
+       uploadDir: path.join(uploadPath),
+       autoFields: true,
+     });
 
-     upload(req, res, (err) => {
-       if (err) {
-         res.json(err);
-       } else {
+     // chk error
+
+     form.on('error', function (err) {
+       console.log('Error parsing form: ' + err.stack);
+     });
+
+      
+       form.parse(req, parser );
+       console.log( Object.keys(x))
+
+       
+}
+
+// Parser Function
+
+const parser = (err, fields, files) => {
+
+  for (const [key, value] of Object.entries(fields)) {
+    
+    let x = {}
+    x[`${key}`] = value[0];
+    console.log(`${x}`)
+  }
+
+  for (const [key, value] of Object.entries(fields)) {
+  let y = {}
+  y[`${key}`] = value;
+  }
+  
  
-        req.body.Image = {
-          name: req.file.filename,
-          path: req.file.destination,
-          fullPath: path.join(req.file.destination, req.file.filename),
-        };
-         next();
-        }
-    });
-}
+  // const y  = fields[Object.keys(fields)[0]]
 
-export const uploadProductCategoryImage =  (req, res, next) =>{
+         
+       }
 
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, './public/product-cat/');
-  },
+export const uploadAuthorPic = (req, res, next) => {
 
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    cb(null, file.originalname + '-' + file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-  },
+  
+
+
+
+  let uploadPath = checkDir(
+    path.join(__dirname, '../public/authors')
+  );
+  var form = new multiparty.Form({
+    uploadDir: path.join(uploadPath),
+    autoFields: true,
+  });
+  form.on('error', function (err) {
+    console.log('Error parsing form: ' + err.stack);
+  });
+  
+  form.parse(req, function (err, fields, files) {
+    for (const [key, value] of Object.entries(fields)) {
+      console.log(`fields => ${key}: ${value}`);
+      req.body[`${key}`] = value[0];
+    }
+     console.log(files)
+  console.log('oldpath =>',path.join(files.file[0].path));
+const oldPath = path.join(files.file[0].path);
+const newPath = checkDir(
+  path.join(
+    `../public/author${req.body.prenume}_${req.body.nume}/${files.file[0].originalFilename}`
+  )
+);
+mv(oldPath, newPath, function (err) {
+  if (err) {
+    throw err;
+  } else {
+    console.log('Successfully moved the file!');
+  }
 });
 
-const upload = multer({ storage: storage }).single('categoryImage');
+
+req.body.image = newPath;
+
+console.log('REQ BODY ->', req.body)
 
 
 
-     upload(req, res, (err) => {
-       if (err) {
-         res.json(err);
-       } else {
-   
-        req.body.Image = {
-          name: req.file.filename,
-          path: req.file.destination,
-          fullPath: path.join(req.file.destination, req.file.filename),
-        };
-         next();
-        }
-    });
-}
 
 
-export const uploadProductThumbnail = (req, res, next) => {
-  const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, './public/products/' + req.body.name);
-    },
 
-    filename: function (req, file, cb) {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-      cb(
-        null,
-        req.body.name +
-        '-' +
-        req.fule.fieldname +
-          uniqueSuffix +
-          path.extname(file.originalname)
-      );
-    },
+
+
+
+
   });
+  
+  
+  res.send(JSON.stringify(req.body)).status(200);
+  // next()
+} 
+    
 
-  const upload = multer({ storage: storage }).single('categoryImage');
-
-  upload(req, res, (err) => {
-    if (err) {
-      res.json(err);
-    } else {
-
-      req.body.Image = {
-        name: req.file.filename,
-        path: req.file.destination,
-        fullPath: path.join(req.file.destination, req.file.filename),
-      };
-      next();
+    
+    
+ 
+export const uploadPostImage = (req, res, next) => {
+    console.log('Upload completed!');
+      next()
     }
-  });
-};
+  
+
+
+
+
+
+    // checkDIR or make it
+
+    const checkDir =(dir) =>{
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+        return dir
+      }
+      return dir
+    }

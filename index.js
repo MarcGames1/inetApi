@@ -6,7 +6,7 @@ import mongoose from 'mongoose';
 import categoryRoutes from './routes/category';
 import postRoutes from './routes/post';
 import authorRoutes from './routes/author'
-
+import path from 'path';
 
 const morgan = require('morgan');
 
@@ -25,6 +25,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(morgan('dev'));
 
+
+
+/// Declare public Dir
+
+const dir = path.join(__dirname, 'public');
+console.log(dir);
+app.use(express.static(dir));
+
+
+//
 // route middlewares
 app.use('/api', authRoutes);
 app.use('/api', categoryRoutes);
