@@ -7,13 +7,12 @@ const {create, authorById, read, update, remove, list} = require ('../controller
 const { requireSignin, isAuth, isAdmin } = require('../controllers/auth');
 const { userById } = require('../controllers/user');
 const {
-  uploadAuthorPic,
-  addFieldstobody,
+  uploadProfilePic,
 } = require('../middleweare/fileUpload');
 // routes
 router.get('/author/:authorId', authorById, read);
 router.get('/authors', list);
-router.post('/author/create/:userId', uploadAuthorPic); // requireSignin, isAuth, isAdmin,
+router.post('/author/create/:userId',requireSignin, isAuth, isAdmin, uploadProfilePic); // requireSignin, isAuth, isAdmin,
 router.put('/author/:authorId/:userId', requireSignin, isAuth, isAdmin, update);
 router.delete('author/:authorId/:userId', requireSignin, isAuth, isAdmin, remove)
 

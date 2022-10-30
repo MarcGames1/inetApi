@@ -1,6 +1,6 @@
 import Author from '../models/author';
 import slugify from 'slugify';
-import multiparty from 'multiparty'
+
 
 
 exports.authorById = (req, res, next, id) => {
@@ -31,16 +31,20 @@ exports.create = async (req, res) => {
     slug: slugify(`${nume} ${prenume}`),
 
   });
-  author.save((err, data) => {
-    if (err) {
-      console.log(err);
-      return res.status(400).json({
-        error: 'Something went wrong',
-      });
-    }
+  console.log(author)
+  res.status(200).json(author);
 
-    res.status(200).json(data);
-  });
+
+  // author.save((err, data) => {
+  //   if (err) {
+  //     console.log(err);
+  //     return res.status(400).json({
+  //       error: 'Something went wrong',
+  //     });
+  //   }
+
+  //   res.status(200).json(data);
+  // });
 };
 
 exports.read = (req, res) => {
