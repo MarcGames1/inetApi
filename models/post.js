@@ -14,7 +14,7 @@ const postSchema = new Schema({
   content: {},
   categories: [{ type: ObjectId, ref: 'Category' }],
   author:{type: ObjectId, ref: 'Author'},
-  Image:{ 
+  image:{ 
     type: Object,
     },
   published: {type: Boolean, default: true},

@@ -26,7 +26,7 @@ router.post(
 router.put('/post/:postId/:userId', requireSignin, isAuth, isAdmin, update);
 
 router.delete('/post/:postId/:userId', requireSignin, isAuth, isAdmin, remove);
-router.get('/categories', list);
+router.get('/posts', list);
 
 router.post('/post/create/upload', uploadPostImage);
 
@@ -34,3 +34,6 @@ router.param('postId', postById);
 router.param('userId', userById);
 
 export default router;
+
+
+//api/posts?_end=10&_order=ASC&_sort=id&_start=0

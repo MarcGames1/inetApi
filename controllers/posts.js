@@ -10,14 +10,14 @@ export const create = (req, res) => {
 
 
 
-  const {title, content, categories, Image} = req.body
+  const {title, content, categories, image} = req.body
  
  let post_slug = slugify(req.body.title)
  let post = new Post({
    title,
    content,
    categories,
-   Image,
+   image,
    slug: post_slug,
  });
  post.save((err, data)=>{
@@ -25,6 +25,7 @@ export const create = (req, res) => {
     
      return res.status(500).json({error: err});
    }if(data){
+    console.log("Saved Post", JSON.stringify(data))
     res.status(200).json({success: true})
    }
    

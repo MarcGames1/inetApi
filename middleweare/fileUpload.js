@@ -29,7 +29,7 @@ exports.uploadProfilePic = (req, res, next) =>{
     else
     {
       console.log(req.body)
-      req.body.image = req.file.destination,
+      req.body.image = req.file.destination
       res.json({
           name: req.file.filename,
           path: storagePaths,
@@ -44,5 +44,19 @@ exports.uploadProfilePic = (req, res, next) =>{
 
 
 export const uploadPostImage = (req, res, next)=>{
+  const storagePaths = ['public', 'posts']
+   const upload = multer({ storage: storeSingleFile(req, res, path.join(...storagePaths)) }).single('thumbnail')
+
+    upload(req, res, err => {
+    if (err) {res.json(err)} 
+    else{
+      console.log(req.body)
+      let imgPath = req.file.destination.split(path.sep)
+      imgPath.push(req.file.filename)
+      console.log("Image Path will be constructed using parh.join() with following parameter => ", imgPath)
+       req.body.image = imgPath
   next()
+  }
+})
 }
+
