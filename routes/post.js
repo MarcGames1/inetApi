@@ -1,7 +1,7 @@
 import express from 'express';
 
 const router = express.Router();
-import { uploadPostImage } from '../middleweare/fileUpload';
+import {uploadPostThumbnail, uploadPostImage } from '../middleweare/fileUpload';
 import {
   create,
   postById,
@@ -20,7 +20,7 @@ router.post(
   requireSignin,
   isAuth,
   isAdmin,
-  uploadPostImage,
+  uploadPostThumbnail,
   create
 );
 router.put('/post/:postId/:userId', requireSignin, isAuth, isAdmin, update);
@@ -28,7 +28,7 @@ router.put('/post/:postId/:userId', requireSignin, isAuth, isAdmin, update);
 router.delete('/post/:postId/:userId', requireSignin, isAuth, isAdmin, remove);
 router.get('/posts', list);
 
-router.post('/post/create/upload', uploadPostImage);
+router.post('/uploadeditorimages', uploadPostImage);
 
 router.param('postId', postById);
 router.param('userId', userById);
