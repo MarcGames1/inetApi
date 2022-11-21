@@ -15,6 +15,20 @@ exports.authorById = (req, res, next, id) => {
   });
 };
 
+exports.authorBySlug = (req, res, next, slug)=>{
+  Author.findOne({slug}).exec((err, author) => {
+    if (err || !author) {
+      console.log(err)
+      res.status(400).json({
+        error: 'Autorul nu exista',
+      });
+    }
+    req.author = author;
+    next();
+  });
+};
+
+
 exports.create = async (req, res) => {
   console.log('Create Author started with:');
   console.log('req.body,', req.body);
@@ -31,20 +45,20 @@ exports.create = async (req, res) => {
     slug: slugify(`${nume} ${prenume}`),
 
   });
-  console.log(author)
-  res.status(200).json(author);
+  
+ 
 
 
-  // author.save((err, data) => {
-  //   if (err) {
-  //     console.log(err);
-  //     return res.status(400).json({
-  //       error: 'Something went wrong',
-  //     });
-  //   }
+  author.save((err, data) => {
+    if (err) {
+      console.log(err);
+      return res.status(400).json({
+        error: 'Something went wrong',
+      });
+    }
 
-  //   res.status(200).json(data);
-  // });
+    res.status(200).json(data);
+  });
 };
 
 exports.read = (req, res) => {
@@ -89,3 +103,7 @@ exports.list = (req, res) => {
     res.json(data);
   });
 };
+
+exports.read = (req,res) =>{
+    return res.json(req.author)
+}

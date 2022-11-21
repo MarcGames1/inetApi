@@ -1,6 +1,7 @@
 const Category = require("../models/category")
 import slugify from 'slugify';
 import fs from 'fs';
+
 exports.categoryById = (req, res, next, id) => {
     Category.findById(id).exec((err, category) =>{
         if(err || !category) {

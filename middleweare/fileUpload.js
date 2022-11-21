@@ -44,13 +44,13 @@ exports.uploadProfilePic = (req, res, next) =>{
     if (err) {res.json(err)}
     else
     {
-      console.log(req.body)
-      req.body.image = req.file.destination
-      res.json({
-          name: req.file.filename,
-          path: storagePaths,
-          fullPath: path.join(...storagePaths, req.file.filename),
-        })
+     
+      let imgPath = req.file.destination.split(path.sep)
+      imgPath.shift()
+      imgPath.push(req.file.filename)
+      console.log("Image Path will be constructed using parh.join() with following parameter => ", imgPath)
+       req.body.image = imgPath
+     
       next()
     }
   })     

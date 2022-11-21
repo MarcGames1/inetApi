@@ -22,10 +22,7 @@ const authorSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    image: {
-      type: String,
-      trim: true,
-    },
+    image: [],
     slug: {
       type: String,
       unique: true,
@@ -33,10 +30,7 @@ const authorSchema = new mongoose.Schema(
     },
     bio: { type: String, trim: true },
     socialMedia: [
-      {
-        platform: { type: String, trim: true },
-        url: { type: String, trim: true },
-      },
+      
     ],
   },
   { timestamps: true }

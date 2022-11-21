@@ -10,8 +10,18 @@ const postSchema = new Schema({
   title: {
     type: String,
     required: true,
+    trim: true,
   },
-  content: {},
+  content: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  excerpt:{
+  type: String,
+  trim: true,
+  max: 160
+  },
   categories: [{ type: ObjectId, ref: 'Category' }],
   author:{type: ObjectId, ref: 'Author'},
   image:{ 

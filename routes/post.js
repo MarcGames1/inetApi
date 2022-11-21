@@ -1,6 +1,7 @@
 import express from 'express';
 
 const router = express.Router();
+
 import {uploadPostThumbnail, uploadPostImage } from '../middleweare/fileUpload';
 import {
   create,
@@ -32,6 +33,7 @@ router.post('/uploadeditorimages', uploadPostImage);
 
 router.param('postId', postById);
 router.param('userId', userById);
+
 
 export default router;
 
