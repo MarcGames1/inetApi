@@ -6,6 +6,7 @@ import {uploadPostThumbnail, uploadPostImage } from '../middleweare/fileUpload';
 import {
   create,
   postById,
+  postBySlug,
   update,
   remove,
   list,
@@ -14,6 +15,7 @@ import {
 const { userById } = require('../controllers/user');
 import { requireSignin, isAuth, isAdmin } from '../controllers/auth';
 
+router.get('/single-post/:postSlug', postBySlug, read);
 router.get('/post/:postId', postById, read);
 
 router.post(
@@ -31,6 +33,7 @@ router.get('/posts', list);
 
 router.post('/uploadeditorimages', uploadPostImage);
 
+router.param('postSlug', postBySlug)
 router.param('postId', postById);
 router.param('userId', userById);
 

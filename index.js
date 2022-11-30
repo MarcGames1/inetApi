@@ -12,7 +12,7 @@ import categoryRoutes from './routes/category';
 import postRoutes from './routes/post';
 import authorRoutes from './routes/author'
 import authRoutes from'./routes/auth';
-import multer  from 'multer'
+
 
 require('dotenv').config();
 
@@ -34,7 +34,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(cookieParser());
 app.use(bodyParser.json());
-// app.use(multer().single('image'))
 app.use(morgan('dev'));
 
 
@@ -51,10 +50,11 @@ app.use(express.static(dir));
 
 //
 // route middlewares
-app.use('/api', authRoutes);
-app.use('/api', categoryRoutes);
-app.use('/api', postRoutes);
-app.use('/api', authorRoutes);
+app.use('/', authRoutes);
+app.use('/', categoryRoutes);
+app.use('/', postRoutes);
+app.use('/', authorRoutes);
+
 
 const port = process.env.PORT || 8000;
 

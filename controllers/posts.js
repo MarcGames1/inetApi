@@ -11,7 +11,7 @@ export const create = (req, res) => {
 
 
 
-  const {title, content, categories, image, author, excerpt} = req.body
+  const {title, content, categories, image, contentImages, author, excerpt} = req.body
  
  let post_slug = slugify(req.body.title)
  let post = new Post({
@@ -21,9 +21,11 @@ export const create = (req, res) => {
    image,
    author,
    excerpt,
+   contentImages,
    slug: post_slug,
  });
  post.save((err, data)=>{
+  console.log(...post)
   if(err){
     
      return res.status(500).json({error: err});
@@ -61,7 +63,7 @@ post.remove((err, data)=>{
 };
 
 export const list = (req, res) => {
-  Post.find().select(['title', 'image', 'excerpt']).populate({ path: 'author', select: ['nume', 'prenume'] }).populate({ path: 'categories', select: 'name' }).exec((err, data)=>{
+  Post.find().select(['title', 'image', 'excerpt', 'slug']).populate({ path: 'author', select: ['nume', 'prenume', 'slug'] }).populate({ path: 'categories', select: 'name' }).exec((err, data)=>{
         if(err){
             return res.status(400).json({error: "Something went wrong listing the posts"})
         }
@@ -96,6 +98,20 @@ export const postById = (req, res, next, id) => {
     next();
   });
 };
+
+export const postBySlug = (req, res, next, postSlug) => {
+
+  Post.findOne({slug: postSlug}).select(['title', 'image', 'excerpt', 'content', 'updatedAt']).populate({ path: 'author', select: ['nume', 'prenume', 'image', 'functie', 'slug'] }).populate({ path: 'categories', select: 'name' }).exec((err, post) => {
+    if (err || !Post) {
+      res.status(400).json({
+        error: 'ERROR Post Does not exist',
+      });
+    }
+    req.post = post;
+    next();
+  });
+};
+
 
 export const read = (req, res) => {
   return res.json(req.post)

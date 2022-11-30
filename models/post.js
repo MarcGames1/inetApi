@@ -17,6 +17,7 @@ const postSchema = new Schema({
     required: true,
     trim: true,
   },
+  contentImages:[{ type: String,  trim: true,}],
   excerpt:{
   type: String,
   trim: true,

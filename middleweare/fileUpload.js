@@ -81,6 +81,7 @@ export const uploadPostImage = (req, res, next)=>{
 
   const storagePaths = ['public', 'posts', 'postpics']
    const upload = multer({ storage: storeMultiple(req, res, path.join(...storagePaths)) }).single('image')
+
    upload(req, res, err=>{
     if(err){res.json(err)} 
     else {
